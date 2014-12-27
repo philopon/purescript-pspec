@@ -3,9 +3,9 @@ modules
 
 main modules
 ---
-* [Test.PSpec](docs/Test/PSpec.md) - main test functions.
-* [Test.PSpec.Mocha](docs/Test/PSpec/Mocha.md) - mocha test runner.
+* [Test.PSpec](Test/PSpec.md) - main test functions.
+* [Test.PSpec.Mocha](Test/PSpec/Mocha.md) - mocha test runner.
 
 advanced modules
 ---
-* [Test.PSpec.Types](docs/Test/PSpec/Types.md) - for custom runner.
+* [Test.PSpec.Types](Test/PSpec/Types.md) - for custom runner.

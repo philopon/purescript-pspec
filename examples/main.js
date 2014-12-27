@@ -5052,7 +5052,7 @@ function setTimeoutImpl(_this, to){
     };
 })();
 var PS = PS || {};
-PS.Main = (function () {
+PS.Test_Main = (function () {
     "use strict";
     var Test_PSpec_Mocha = PS.Test_PSpec_Mocha;
     var Prelude = PS.Prelude;
@@ -5115,5 +5115,5 @@ PS.Main = (function () {
         main: main
     };
 })();
-PS.Main.main();
+PS.Test_Main.main();
 
