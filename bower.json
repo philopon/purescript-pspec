@@ -1,0 +1,22 @@
+{
+  "name": "purescript-pspec",
+  "version": "1.0.0",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-arrays": "~0.3.0",
+    "purescript-maybe": "~0.2.1",
+    "purescript-strings": "~0.4.2"
+  },
+  "devDependencies": {
+    "purescript-timers": "~0.0.8",
+    "purescript-simple-assert": "~0.2.0"
+  }
+}
