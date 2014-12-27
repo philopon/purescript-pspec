@@ -4822,6 +4822,20 @@ function setTimeoutImpl(_this, to){
     _this.timeout(to);
   }
 };
+    
+function itIs(done){
+  return function itIsEff(){
+    done();
+  }
+};
+    
+function itIsNot(done){
+  return function itIsNotMsg(msg){
+    return function itIsNotEff(){
+      done(msg);
+    }
+  }
+};
     var setTO = function ($$this) {
         return function (to) {
             return Data_Maybe.maybe(Prelude["return"](Control_Monad_Eff.monadEff)(Prelude.unit))(Data_Function.runFn2(setTimeoutImpl)($$this))(to);
@@ -5048,6 +5062,8 @@ function setTimeoutImpl(_this, to){
         return runMocha$prime(Test_PSpec_Types.initialState)(Test_PSpec_Types.runSpec(s));
     };
     return {
+        itIs: itIs, 
+        itIsNot: itIsNot, 
         runMocha: runMocha
     };
 })();
@@ -5069,36 +5085,36 @@ PS.Test_Main = (function () {
                     return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.beforeAsync(function (done) {
                         return function __do() {
                             var _ = Debug_Trace.trace("beforeAsync called")();
-                            return done();
+                            return Test_PSpec_Mocha.itIs(done)();
                         };
                     }))(function () {
                         return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.afterAsync(function (done) {
                             return function __do() {
                                 var _ = Debug_Trace.trace("afterAsync called")();
-                                return done();
+                                return Test_PSpec_Mocha.itIs(done)();
                             };
                         }))(function () {
                             return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.beforeEachAsync(function (done) {
                                 return function __do() {
                                     var _ = Debug_Trace.trace("beforeEachAsync called")();
-                                    return done();
+                                    return Test_PSpec_Mocha.itIs(done)();
                                 };
                             }))(function () {
                                 return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.afterEachAsync(function (done) {
                                     return function __do() {
                                         var _ = Debug_Trace.trace("afterEachAsync called")();
-                                        return done();
+                                        return Test_PSpec_Mocha.itIs(done)();
                                     };
                                 }))(function () {
                                     return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.describe("title")(Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.it("success")(Prelude["return"](Control_Monad_Eff.monadEff)(Prelude.unit)))(function () {
                                         return Test_PSpec.itAsync("async success")(function (done) {
-                                            return done;
+                                            return Test_PSpec_Mocha.itIs(done);
                                         });
                                     })))(function () {
                                         return Test_PSpec.describe("title2")(Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.pending("pending"))(function () {
                                             return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.skip(Test_PSpec.it("failure")(Test_Assert_Simple.assertFailure("failure"))))(function () {
                                                 return Test_PSpec.describe("nested")(Test_PSpec.setTimeout(5000)(Test_PSpec.itAsync("long time")(function (done) {
-                                                    return Control_Timer.timeout(3000)(done);
+                                                    return Control_Timer.timeout(3000)(Test_PSpec_Mocha.itIsNot(done)("failed"));
                                                 })));
                                             });
                                         }));
