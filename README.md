@@ -1,5 +1,8 @@
 purescript-pspec
 ===
+[![Bower version](https://badge.fury.io/bo/purescript-pspec.svg)](http://badge.fury.io/bo/purescript-pspec)
+[![devDependency Status](https://david-dm.org/philopon/purescript-pspec/dev-status.svg)](https://david-dm.org/philopon/purescript-pspec#info=devDependencies)
+
 test suite for purescript.
 
 * [Module documentation](docs)
