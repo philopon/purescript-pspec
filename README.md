@@ -10,8 +10,12 @@ usage
 1. write test code(see [example](examples/Main.purs)).
 2. compile
 
-    psc --main=Test.Main `ls bower_components/**/src/**/*.purs` `ls src/**/*.purs` examples/Main.purs > examples/main.js
+    ```.sh
+    $ psc --main=Test.Main `ls bower_components/**/src/**/*.purs` `ls src/**/*.purs` examples/Main.purs > examples/main.js
+    ```
 
 3. execute mocha
 
-    mocha examples/main.js
+    ```.sh
+    $ mocha examples/main.js
+    ```
