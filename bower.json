@@ -1,6 +1,6 @@
 {
   "name": "purescript-pspec",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "moduleType": [
     "node"
   ],
@@ -8,7 +8,9 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "output"
+    "output",
+    "examples/main.js",
+    "examples/result.txt"
   ],
   "dependencies": {
     "purescript-arrays": "~0.3.0",
