@@ -28,5 +28,13 @@ main = runMocha $ do
     skip $ it "failure" $ assertFailure "failure"
 
     describe "nested" $ do
+
+      describe "skip with predicate" $ do
+        skipIf true $ do
+          it "skipped" $ return unit
+
+        skipIf false $ do
+          it "not skipped" $ return unit
+
       setTimeout 5000 $ do
         itAsync "long time" $ \done -> timeout 3000 (itIs done)

@@ -4607,10 +4607,30 @@ PS.Test_PSpec = (function () {
         };
     };
     var skip = setMode(Test_PSpec_Types.skipMode);
+    var skipIf = function (b) {
+        return function (s) {
+            return b ? skip(s) : s;
+        };
+    };
+    var skipUnless = function (b) {
+        return function (s) {
+            return b ? s : skip(s);
+        };
+    };
     var pending = function (name) {
         return Test_PSpec_Types.write(new Test_PSpec_Types.Pending(name));
     };
     var only = setMode(Test_PSpec_Types.onlyMode);
+    var onlyIf = function (b) {
+        return function (s) {
+            return b ? only(s) : s;
+        };
+    };
+    var onlyUnless = function (b) {
+        return function (s) {
+            return b ? s : only(s);
+        };
+    };
     var itAsync = function (name) {
         return function (eff) {
             return Test_PSpec_Types.write(new Test_PSpec_Types.ItAsync(name, function (d) {
@@ -4705,9 +4725,13 @@ PS.Test_PSpec = (function () {
         it: it, 
         itAsync: itAsync, 
         only: only, 
+        onlyIf: onlyIf, 
+        onlyUnless: onlyUnless, 
         pending: pending, 
         setTimeout: setTimeout, 
-        skip: skip
+        skip: skip, 
+        skipIf: skipIf, 
+        skipUnless: skipUnless
     };
 })();
 var PS = PS || {};
@@ -5113,9 +5137,13 @@ PS.Test_Main = (function () {
                                     })))(function () {
                                         return Test_PSpec.describe("title2")(Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.pending("pending"))(function () {
                                             return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.skip(Test_PSpec.it("failure")(Test_Assert_Simple.assertFailure("failure"))))(function () {
-                                                return Test_PSpec.describe("nested")(Test_PSpec.setTimeout(5000)(Test_PSpec.itAsync("long time")(function (done) {
-                                                    return Control_Timer.timeout(3000)(Test_PSpec_Mocha.itIsNot(done)("failed"));
-                                                })));
+                                                return Test_PSpec.describe("nested")(Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.describe("skip with predicate")(Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.skipIf(true)(Test_PSpec.it("skipped")(Prelude["return"](Control_Monad_Eff.monadEff)(Prelude.unit))))(function () {
+                                                    return Test_PSpec.skipIf(false)(Test_PSpec.it("not skipped")(Prelude["return"](Control_Monad_Eff.monadEff)(Prelude.unit)));
+                                                })))(function () {
+                                                    return Test_PSpec.setTimeout(5000)(Test_PSpec.itAsync("long time")(function (done) {
+                                                        return Control_Timer.timeout(3000)(Test_PSpec_Mocha.itIs(done));
+                                                    }));
+                                                }));
                                             });
                                         }));
                                     });

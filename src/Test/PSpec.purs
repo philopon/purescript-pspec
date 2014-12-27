@@ -2,6 +2,8 @@ module Test.PSpec
   ( Spec(), describe, it, itAsync, skip, only, setTimeout
   , pending
 
+  , skipIf, skipUnless, onlyIf, onlyUnless
+
   , before, after, beforeEach, afterEach
   , beforeAsync, afterAsync, beforeEachAsync, afterEachAsync
 
@@ -36,6 +38,18 @@ skip = setMode T.skipMode
 
 only :: forall e. Spec e Unit -> Spec e Unit
 only = setMode T.onlyMode
+
+skipIf :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+skipIf b s = if b then skip s else s
+
+skipUnless :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+skipUnless b s = if b then s else skip s
+
+onlyIf :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+onlyIf b s = if b then only s else s
+
+onlyUnless :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+onlyUnless b s = if b then s else only s
 
 setTimeout :: forall e. Number -> Spec e Unit -> Spec e Unit
 setTimeout to sub = T.write (T.SetTimeout to (T.runSpec sub))
