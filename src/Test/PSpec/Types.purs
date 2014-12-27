@@ -41,14 +41,14 @@ skipMode = ExecMode 1
 onlyMode :: ExecMode
 onlyMode = ExecMode 2
 
-type Done e = Eff e Unit
+foreign import data Done :: *
 
 data Operation e
   -- describe
   = Describe        String   [Operation e]
   -- it
   | It              String   (Eff e Unit)
-  | ItAsync         String   (Done e -> Eff e Unit)
+  | ItAsync         String   (Done -> Eff e Unit)
   | Pending         String
   -- config
   | SetMode         ExecMode [Operation e]
@@ -59,10 +59,10 @@ data Operation e
   | BeforeEach      String   (Eff e Unit)
   | AfterEach       String   (Eff e Unit)
   -- async hooks
-  | BeforeAsync     String   (Done e -> Eff e Unit)
-  | AfterAsync      String   (Done e -> Eff e Unit)
-  | BeforeEachAsync String   (Done e -> Eff e Unit)
-  | AfterEachAsync  String   (Done e -> Eff e Unit)
+  | BeforeAsync     String   (Done -> Eff e Unit)
+  | AfterAsync      String   (Done -> Eff e Unit)
+  | BeforeEachAsync String   (Done -> Eff e Unit)
+  | AfterEachAsync  String   (Done -> Eff e Unit)
 
 type OpState =
   { execMode :: ExecMode

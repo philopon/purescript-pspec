@@ -1,4 +1,4 @@
-module Test.PSpec.Mocha (Mocha(), runMocha) where
+module Test.PSpec.Mocha (Mocha(), runMocha, itIs, itIsNot) where
 
 import Control.Monad.Eff
 import Data.Maybe
@@ -121,7 +121,7 @@ function itAsyncImpl(e, mode, name, test){
   ExecModes
   ExecMode
   String
-  (This -> Done (mocha :: Mocha | e) -> Eff (mocha :: Mocha | e) a)
+  (This -> Done -> Eff (mocha :: Mocha | e) a)
   (Eff (mocha :: Mocha | e) Unit)
 
 foreign import beforeAsyncImpl """
@@ -134,7 +134,7 @@ function beforeAsyncImpl(e, mode, name, hook){
   ExecModes
   ExecMode
   String
-  (This -> Done (mocha :: Mocha | e) -> Eff (mocha :: Mocha | e) a)
+  (This -> Done -> Eff (mocha :: Mocha | e) a)
   (Eff (mocha :: Mocha | e) Unit)
 
 foreign import afterAsyncImpl """
@@ -147,7 +147,7 @@ function afterAsyncImpl(e, mode, name, hook){
   ExecModes
   ExecMode
   String
-  (This -> Done (mocha :: Mocha | e) -> Eff (mocha :: Mocha | e) a)
+  (This -> Done -> Eff (mocha :: Mocha | e) a)
   (Eff (mocha :: Mocha | e) Unit)
 
 foreign import beforeEachAsyncImpl """
@@ -160,7 +160,7 @@ function beforeEachAsyncImpl(e, mode, name, hook){
   ExecModes
   ExecMode
   String
-  (This -> Done (mocha :: Mocha | e) -> Eff (mocha :: Mocha | e) a)
+  (This -> Done -> Eff (mocha :: Mocha | e) a)
   (Eff (mocha :: Mocha | e) Unit)
 
 foreign import afterEachAsyncImpl """
@@ -173,7 +173,7 @@ function afterEachAsyncImpl(e, mode, name, hook){
   ExecModes
   ExecMode
   String
-  (This -> Done (mocha :: Mocha | e) -> Eff (mocha :: Mocha | e) a)
+  (This -> Done -> Eff (mocha :: Mocha | e) a)
   (Eff (mocha :: Mocha | e) Unit)
 
 foreign import setTimeoutImpl """
@@ -185,6 +185,22 @@ function setTimeoutImpl(_this, to){
   This
   Number
   (Eff (mocha :: Mocha | e) Unit)
+
+foreign import itIs """
+function itIs(done){
+  return function itIsEff(){
+    done();
+  }
+}""" :: forall e. Done -> Eff (mocha :: Mocha | e) Unit
+
+foreign import itIsNot """
+function itIsNot(done){
+  return function itIsNotMsg(msg){
+    return function itIsNotEff(){
+      done(msg);
+    }
+  }
+}""" :: forall e. Done -> String -> Eff (mocha :: Mocha | e) Unit
 
 setTO this to = maybe (return unit) (runFn2 setTimeoutImpl this) to
 

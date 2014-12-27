@@ -14,14 +14,14 @@ main = runMocha $ do
   beforeEach $ trace "before each called"
   afterEach  $ trace "after each called"
 
-  beforeAsync     $ \done -> trace "beforeAsync called" >>= \_ -> done
-  afterAsync      $ \done -> trace "afterAsync called" >>= \_ -> done
-  beforeEachAsync $ \done -> trace "beforeEachAsync called" >>= \_ -> done
-  afterEachAsync  $ \done -> trace "afterEachAsync called" >>= \_ -> done
+  beforeAsync     $ \done -> trace "beforeAsync called" >>= \_ -> itIs done
+  afterAsync      $ \done -> trace "afterAsync called" >>= \_ -> itIs done
+  beforeEachAsync $ \done -> trace "beforeEachAsync called" >>= \_ -> itIs done
+  afterEachAsync  $ \done -> trace "afterEachAsync called" >>= \_ -> itIs done
 
   describe "title" $ do
     it "success" $ return unit
-    itAsync "async success" $ \done -> done
+    itAsync "async success" $ \done -> itIs done
 
   describe "title2" $ do
     pending "pending"
@@ -29,4 +29,4 @@ main = runMocha $ do
 
     describe "nested" $ do
       setTimeout 5000 $ do
-        itAsync "long time" $ \done -> timeout 3000 done
+        itAsync "long time" $ \done -> timeout 3000 (itIs done)
