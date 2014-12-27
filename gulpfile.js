@@ -1,6 +1,7 @@
 var gulp       = require('gulp');
 var purescript = require('gulp-purescript');
 var foreach    = require('gulp-foreach');
+var mocha      = require('gulp-mocha');
 
 var path       = require('path');
 
@@ -36,8 +37,11 @@ gulp.task('pscDocs', function(){
 gulp.task('example', function(){
   return gulp
     .src(sources.concat('examples/Main.purs'))
-    .pipe(purescript.psc({main: "Main", output: 'main.js'}))
-    .pipe(gulp.dest('examples/'));
+    .pipe(purescript.psc({main: "Test.Main", output: 'main.js'}))
+    .pipe(gulp.dest('examples/'))
+    .pipe(mocha());
 });
+
+gulp.task('test', ['example']);
 
 gulp.task('default', ['pscMake', 'dotPsci', 'pscDocs', 'example']);
