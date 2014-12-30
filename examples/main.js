@@ -4595,7 +4595,20 @@ PS.Test_PSpec = (function () {
     "use strict";
     var Test_PSpec_Types = PS.Test_PSpec_Types;
     var Prelude = PS.Prelude;
+    var Data_Function = PS.Data_Function;
     var Control_Monad_Eff = PS.Control_Monad_Eff;
+    
+function itIs(done){
+  return function itIsEff(){
+    done();
+  }
+};
+    
+function itIsNotImpl(done, msg){
+  return function itIsNotEff(){
+    done(msg);
+  }
+};
     var setTimeout = function (to) {
         return function (sub) {
             return Test_PSpec_Types.write(new Test_PSpec_Types.SetTimeout(to, Test_PSpec_Types.runSpec(sub)));
@@ -4631,6 +4644,7 @@ PS.Test_PSpec = (function () {
             return b ? s : only(s);
         };
     };
+    var itIsNot = Data_Function.runFn2(itIsNotImpl);
     var itAsync = function (name) {
         return function (eff) {
             return Test_PSpec_Types.write(new Test_PSpec_Types.ItAsync(name, function (d) {
@@ -4724,6 +4738,8 @@ PS.Test_PSpec = (function () {
         describe: describe, 
         it: it, 
         itAsync: itAsync, 
+        itIs: itIs, 
+        itIsNot: itIsNot, 
         only: only, 
         onlyIf: onlyIf, 
         onlyUnless: onlyUnless, 
@@ -4844,20 +4860,6 @@ function afterEachAsyncImpl(e, mode, name, hook){
 function setTimeoutImpl(_this, to){
   return function setTimeoutImplEff(){
     _this.timeout(to);
-  }
-};
-    
-function itIs(done){
-  return function itIsEff(){
-    done();
-  }
-};
-    
-function itIsNot(done){
-  return function itIsNotMsg(msg){
-    return function itIsNotEff(){
-      done(msg);
-    }
   }
 };
     var setTO = function ($$this) {
@@ -5086,8 +5088,6 @@ function itIsNot(done){
         return runMocha$prime(Test_PSpec_Types.initialState)(Test_PSpec_Types.runSpec(s));
     };
     return {
-        itIs: itIs, 
-        itIsNot: itIsNot, 
         runMocha: runMocha
     };
 })();
@@ -5109,30 +5109,30 @@ PS.Test_Main = (function () {
                     return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.beforeAsync(function (done) {
                         return function __do() {
                             var _ = Debug_Trace.trace("beforeAsync called")();
-                            return Test_PSpec_Mocha.itIs(done)();
+                            return Test_PSpec.itIs(done)();
                         };
                     }))(function () {
                         return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.afterAsync(function (done) {
                             return function __do() {
                                 var _ = Debug_Trace.trace("afterAsync called")();
-                                return Test_PSpec_Mocha.itIs(done)();
+                                return Test_PSpec.itIs(done)();
                             };
                         }))(function () {
                             return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.beforeEachAsync(function (done) {
                                 return function __do() {
                                     var _ = Debug_Trace.trace("beforeEachAsync called")();
-                                    return Test_PSpec_Mocha.itIs(done)();
+                                    return Test_PSpec.itIs(done)();
                                 };
                             }))(function () {
                                 return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.afterEachAsync(function (done) {
                                     return function __do() {
                                         var _ = Debug_Trace.trace("afterEachAsync called")();
-                                        return Test_PSpec_Mocha.itIs(done)();
+                                        return Test_PSpec.itIs(done)();
                                     };
                                 }))(function () {
                                     return Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.describe("title")(Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.it("success")(Prelude["return"](Control_Monad_Eff.monadEff)(Prelude.unit)))(function () {
                                         return Test_PSpec.itAsync("async success")(function (done) {
-                                            return Test_PSpec_Mocha.itIs(done);
+                                            return Test_PSpec.itIs(done);
                                         });
                                     })))(function () {
                                         return Test_PSpec.describe("title2")(Prelude[">>="](Test_PSpec_Types.bindSpec)(Test_PSpec.pending("pending"))(function () {
@@ -5141,7 +5141,7 @@ PS.Test_Main = (function () {
                                                     return Test_PSpec.skipIf(false)(Test_PSpec.it("not skipped")(Prelude["return"](Control_Monad_Eff.monadEff)(Prelude.unit)));
                                                 })))(function () {
                                                     return Test_PSpec.setTimeout(5000)(Test_PSpec.itAsync("long time")(function (done) {
-                                                        return Control_Timer.timeout(3000)(Test_PSpec_Mocha.itIs(done));
+                                                        return Control_Timer.timeout(3000)(Test_PSpec.itIs(done));
                                                     }));
                                                 }));
                                             });

@@ -4,7 +4,7 @@
 
 ### Types
 
-    type Done e = Eff e Unit
+    data Done :: *
 
     newtype ExecMode
 
@@ -15,7 +15,7 @@
     data Operation e where
       Describe :: String -> [Operation e] -> Operation e
       It :: String -> Eff e Unit -> Operation e
-      ItAsync :: String -> (Done e -> Eff e Unit) -> Operation e
+      ItAsync :: String -> (Done -> Eff e Unit) -> Operation e
       Pending :: String -> Operation e
       SetMode :: ExecMode -> [Operation e] -> Operation e
       SetTimeout :: Number -> [Operation e] -> Operation e
@@ -23,10 +23,10 @@
       After :: String -> Eff e Unit -> Operation e
       BeforeEach :: String -> Eff e Unit -> Operation e
       AfterEach :: String -> Eff e Unit -> Operation e
-      BeforeAsync :: String -> (Done e -> Eff e Unit) -> Operation e
-      AfterAsync :: String -> (Done e -> Eff e Unit) -> Operation e
-      BeforeEachAsync :: String -> (Done e -> Eff e Unit) -> Operation e
-      AfterEachAsync :: String -> (Done e -> Eff e Unit) -> Operation e
+      BeforeAsync :: String -> (Done -> Eff e Unit) -> Operation e
+      AfterAsync :: String -> (Done -> Eff e Unit) -> Operation e
+      BeforeEachAsync :: String -> (Done -> Eff e Unit) -> Operation e
+      AfterEachAsync :: String -> (Done -> Eff e Unit) -> Operation e
 
     newtype Spec e a
 
