@@ -1,6 +1,7 @@
 module Test.PSpec
   ( Spec(), describe, it, itAsync, skip, only, setTimeout
   , pending
+  , itIs, itIsNot
 
   , skipIf, skipUnless, onlyIf, onlyUnless
 
@@ -92,3 +93,20 @@ beforeEachAsync :: forall e a. (T.Done -> Eff e a) -> Spec e Unit
 beforeEachAsync = beforeEachAsync' ""
 afterEachAsync  :: forall e a. (T.Done -> Eff e a) -> Spec e Unit
 afterEachAsync  = afterEachAsync' ""
+
+foreign import itIs """
+function itIs(done){
+  return function itIsEff(){
+    done();
+  }
+}""" :: forall e. T.Done -> Eff e Unit
+
+foreign import itIsNotImpl """
+function itIsNotImpl(done, msg){
+  return function itIsNotEff(){
+    done(msg);
+  }
+}""" :: forall e. Fn2 T.Done String (Eff e Unit)
+
+itIsNot :: forall e. T.Done -> String -> Eff e Unit
+itIsNot = runFn2 itIsNotImpl

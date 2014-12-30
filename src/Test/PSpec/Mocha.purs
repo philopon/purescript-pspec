@@ -1,4 +1,4 @@
-module Test.PSpec.Mocha (Mocha(), runMocha, itIs, itIsNot) where
+module Test.PSpec.Mocha (Mocha(), runMocha) where
 
 import Control.Monad.Eff
 import Data.Maybe
@@ -185,22 +185,6 @@ function setTimeoutImpl(_this, to){
   This
   Number
   (Eff (mocha :: Mocha | e) Unit)
-
-foreign import itIs """
-function itIs(done){
-  return function itIsEff(){
-    done();
-  }
-}""" :: forall e. Done -> Eff (mocha :: Mocha | e) Unit
-
-foreign import itIsNot """
-function itIsNot(done){
-  return function itIsNotMsg(msg){
-    return function itIsNotEff(){
-      done(msg);
-    }
-  }
-}""" :: forall e. Done -> String -> Eff (mocha :: Mocha | e) Unit
 
 setTO this to = maybe (return unit) (runFn2 setTimeoutImpl this) to
 
