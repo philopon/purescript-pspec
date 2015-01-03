@@ -47,9 +47,9 @@
 
     itAsync :: forall e a. String -> (T.Done -> Eff e a) -> Spec e Unit
 
-    itIs :: forall e. T.Done -> Eff e Unit
+    itIs :: forall e a. T.Done -> Eff e a
 
-    itIsNot :: forall e. T.Done -> String -> Eff e Unit
+    itIsNot :: forall e a. T.Done -> String -> Eff e a
 
     itIsNot' :: forall a. T.Done -> String -> a
 

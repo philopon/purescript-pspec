@@ -99,16 +99,16 @@ function itIs(done){
   return function itIsEff(){
     done();
   }
-}""" :: forall e. T.Done -> Eff e Unit
+}""" :: forall e a. T.Done -> Eff e a
 
 foreign import itIsNotImpl """
 function itIsNotImpl(done, msg){
   return function itIsNotEff(){
     done(msg);
   }
-}""" :: forall e. Fn2 T.Done String (Eff e Unit)
+}""" :: forall e a. Fn2 T.Done String (Eff e a)
 
-itIsNot :: forall e. T.Done -> String -> Eff e Unit
+itIsNot :: forall e a. T.Done -> String -> Eff e a
 itIsNot = runFn2 itIsNotImpl
 
 foreign import itIsNotPrimeImpl """
