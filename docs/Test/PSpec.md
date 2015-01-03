@@ -51,6 +51,8 @@
 
     itIsNot :: forall e. T.Done -> String -> Eff e Unit
 
+    itIsNot' :: forall a. T.Done -> String -> a
+
     only :: forall e. Spec e Unit -> Spec e Unit
 
     onlyIf :: forall e. Boolean -> Spec e Unit -> Spec e Unit

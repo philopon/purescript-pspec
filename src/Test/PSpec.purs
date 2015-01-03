@@ -1,7 +1,7 @@
 module Test.PSpec
   ( Spec(), describe, it, itAsync, skip, only, setTimeout
   , pending
-  , itIs, itIsNot
+  , itIs, itIsNot, itIsNot'
 
   , skipIf, skipUnless, onlyIf, onlyUnless
 
@@ -110,3 +110,11 @@ function itIsNotImpl(done, msg){
 
 itIsNot :: forall e. T.Done -> String -> Eff e Unit
 itIsNot = runFn2 itIsNotImpl
+
+foreign import itIsNotPrimeImpl """
+function itIsNotPrimeImpl(done, msg){
+  done(msg);
+}""" :: forall a. Fn2 T.Done String a
+
+itIsNot' :: forall a. T.Done -> String -> a
+itIsNot' = runFn2 itIsNotPrimeImpl
