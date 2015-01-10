@@ -186,7 +186,7 @@ function setTimeoutImpl(_this, to){
   Number
   (Eff (mocha :: Mocha | e) Unit)
 
-setTO this to = maybe (return unit) (runFn2 setTimeoutImpl this) to
+setTO this to = maybe (return unit) (\ n -> runFn2 setTimeoutImpl this n) to
 
 runMocha' :: forall e. OpState -> [Operation (mocha :: Mocha | e)] -> Eff (mocha :: Mocha | e) Unit
 runMocha' state []     = return unit
