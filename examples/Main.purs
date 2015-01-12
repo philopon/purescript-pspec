@@ -5,6 +5,9 @@ import Control.Timer
 import Test.PSpec
 import Test.PSpec.Mocha
 import Test.Assert.Simple
+import Test.StrongCheck
+import Data.Tuple
+import Math
 
 import Debug.Trace
 
@@ -38,3 +41,8 @@ main = runMocha $ do
 
       setTimeout 5000 $ do
         itAsync "long time" $ \done -> timeout 3000 (itIs done)
+
+  describe "Math" $ do
+    it "should be bigger multiply by (>= 1)" $ do
+      quickCheck $ \(Tuple (Positive a) b) ->
+        (max 1 a) * b >= b
