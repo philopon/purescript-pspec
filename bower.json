@@ -1,6 +1,6 @@
 {
   "name": "purescript-pspec",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "moduleType": [
     "node"
   ],
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "purescript-timers": "~0.0.8",
-    "purescript-simple-assert": "~0.2.0"
+    "purescript-simple-assert": "~0.2.0",
+    "purescript-strongcheck": "~0.6.0"
   }
 }

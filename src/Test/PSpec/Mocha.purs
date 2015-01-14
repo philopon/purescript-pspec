@@ -12,6 +12,7 @@ foreign import describeImpl """
 function describeImpl(name, test){
   return function describeImplEff(){
     describe(name, function(){test(this)()});
+    return {};
   }
 }""" :: forall e a. Fn2
   String
@@ -28,6 +29,7 @@ function pendingImpl(e, mode, name){
     } else {
       it(name);
     }
+    return {};
   }
 }""" :: forall e a. Fn3
   ExecModes
@@ -46,6 +48,7 @@ function itImpl(e, mode, name, test){
     } else {
       it(name, function(){test(this)()});
     }
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -59,6 +62,7 @@ function beforeImpl(e, mode, name, hook){
   return function beforeImplEff(){
     if(name) before(name, function(){hook(this)()});
     else     before(function(){hook(this)()});
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -72,6 +76,7 @@ function afterImpl(e, mode, name, hook){
   return function afterImplEff(){
     if(name) after(name, function(){hook(this)()});
     else     after(function(){hook(this)()});
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -85,6 +90,7 @@ function beforeEachImpl(e, mode, name, hook){
   return function beforeEachImplEff(){
     if(name) beforeEach(name, function(){hook(this)()});
     else     beforeEach(function(){hook(this)()});
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -98,6 +104,7 @@ function afterEachImpl(e, mode, name, hook){
   return function afterEachImplEff(){
     if(name) afterEach(name, function(){hook(this)()});
     else     afterEach(function(){hook(this)()});
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -116,6 +123,7 @@ function itAsyncImpl(e, mode, name, test){
     } else {
       it(name, function(done){test(this)(done)()});
     }
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -129,6 +137,7 @@ function beforeAsyncImpl(e, mode, name, hook){
   return function beforeAsyncImplEff(){
     if(name) before(name, function(done){hook(this)(done)()});
     else     before(function(done){hook(this)(done)()});
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -142,6 +151,7 @@ function afterAsyncImpl(e, mode, name, hook){
   return function afterAsyncImplEff(){
     if(name) after(name, function(done){hook(this)(done)()});
     else     after(function(done){hook(this)(done)()});
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -155,6 +165,7 @@ function beforeEachAsyncImpl(e, mode, name, hook){
   return function beforeEachAsyncImplEff(){
     if(name) beforeEach(name, function(done){hook(this)(done)()});
     else     beforeEach(function(done){hook(this)(done)()});
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -168,6 +179,7 @@ function afterEachAsyncImpl(e, mode, name, hook){
   return function afterEachAsyncImplEff(){
     if(name) afterEach(name, function(done){hook(this)(done)()});
     else     afterEach(function(done){hook(this)(done)()});
+    return {};
   }
 }""" :: forall e a. Fn4
   ExecModes
@@ -180,6 +192,7 @@ foreign import setTimeoutImpl """
 function setTimeoutImpl(_this, to){
   return function setTimeoutImplEff(){
     _this.timeout(to);
+    return {};
   }
 }""" :: forall e. Fn2
   This
