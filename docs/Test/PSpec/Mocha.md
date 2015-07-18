@@ -1,17 +1,16 @@
-# Module Documentation
-
 ## Module Test.PSpec.Mocha
 
-### Types
+#### `Mocha`
 
+``` purescript
+data Mocha :: !
+```
 
-    data Mocha :: !
+#### `runMocha`
 
-
-### Values
-
-
-    runMocha :: forall e. Spec (mocha :: Mocha | e) Unit -> Eff (mocha :: Mocha | e) Unit
+``` purescript
+runMocha :: forall e. Spec (mocha :: Mocha | e) Unit -> Eff (mocha :: Mocha | e) Unit
+```
 
 
 

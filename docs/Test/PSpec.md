@@ -1,104 +1,190 @@
-# Module Documentation
-
 ## Module Test.PSpec
 
-### Types
+#### `Spec`
 
+``` purescript
+type Spec = Spec
+```
 
-    type Spec = T.Spec
+#### `describe`
 
+``` purescript
+describe :: forall e. String -> Spec e Unit -> Spec e Unit
+```
 
-### Values
+#### `it`
 
+``` purescript
+it :: forall e. String -> Eff e _ -> Spec e Unit
+```
 
-    after :: forall e. Eff e _ -> Spec e Unit
+#### `itAsync`
 
+``` purescript
+itAsync :: forall e. String -> (Done -> Eff e _) -> Spec e Unit
+```
 
-    after' :: forall e. String -> Eff e _ -> Spec e Unit
+#### `skip`
 
+``` purescript
+skip :: forall e. Spec e Unit -> Spec e Unit
+```
 
-    afterAsync :: forall e. (T.Done -> Eff e _) -> Spec e Unit
+#### `only`
 
+``` purescript
+only :: forall e. Spec e Unit -> Spec e Unit
+```
 
-    afterAsync' :: forall e. String -> (T.Done -> Eff e _) -> Spec e Unit
+#### `skipIf`
 
+``` purescript
+skipIf :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+```
 
-    afterEach :: forall e. Eff e _ -> Spec e Unit
+#### `skipUnless`
 
+``` purescript
+skipUnless :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+```
 
-    afterEach' :: forall e. String -> Eff e _ -> Spec e Unit
+#### `onlyIf`
 
+``` purescript
+onlyIf :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+```
 
-    afterEachAsync :: forall e. (T.Done -> Eff e _) -> Spec e Unit
+#### `onlyUnless`
 
+``` purescript
+onlyUnless :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+```
 
-    afterEachAsync' :: forall e. String -> (T.Done -> Eff e _) -> Spec e Unit
+#### `setTimeout`
 
+``` purescript
+setTimeout :: forall e. Number -> Spec e Unit -> Spec e Unit
+```
 
-    before :: forall e. Eff e _ -> Spec e Unit
+#### `pending`
 
+``` purescript
+pending :: forall e. String -> Spec e Unit
+```
 
-    before' :: forall e. String -> Eff e _ -> Spec e Unit
+#### `before'`
 
+``` purescript
+before' :: forall e. String -> Eff e _ -> Spec e Unit
+```
 
-    beforeAsync :: forall e. (T.Done -> Eff e _) -> Spec e Unit
+#### `after'`
 
+``` purescript
+after' :: forall e. String -> Eff e _ -> Spec e Unit
+```
 
-    beforeAsync' :: forall e. String -> (T.Done -> Eff e _) -> Spec e Unit
+#### `beforeEach'`
 
+``` purescript
+beforeEach' :: forall e. String -> Eff e _ -> Spec e Unit
+```
 
-    beforeEach :: forall e. Eff e _ -> Spec e Unit
+#### `afterEach'`
 
+``` purescript
+afterEach' :: forall e. String -> Eff e _ -> Spec e Unit
+```
 
-    beforeEach' :: forall e. String -> Eff e _ -> Spec e Unit
+#### `beforeAsync'`
 
+``` purescript
+beforeAsync' :: forall e. String -> (Done -> Eff e _) -> Spec e Unit
+```
 
-    beforeEachAsync :: forall e. (T.Done -> Eff e _) -> Spec e Unit
+#### `afterAsync'`
 
+``` purescript
+afterAsync' :: forall e. String -> (Done -> Eff e _) -> Spec e Unit
+```
 
-    beforeEachAsync' :: forall e. String -> (T.Done -> Eff e _) -> Spec e Unit
+#### `beforeEachAsync'`
 
+``` purescript
+beforeEachAsync' :: forall e. String -> (Done -> Eff e _) -> Spec e Unit
+```
 
-    describe :: forall e. String -> Spec e Unit -> Spec e Unit
+#### `afterEachAsync'`
 
+``` purescript
+afterEachAsync' :: forall e. String -> (Done -> Eff e _) -> Spec e Unit
+```
 
-    it :: forall e. String -> Eff e _ -> Spec e Unit
+#### `before`
 
+``` purescript
+before :: forall e. Eff e _ -> Spec e Unit
+```
 
-    itAsync :: forall e. String -> (T.Done -> Eff e _) -> Spec e Unit
+#### `after`
 
+``` purescript
+after :: forall e. Eff e _ -> Spec e Unit
+```
 
-    itIs :: forall e a. T.Done -> Eff e a
+#### `beforeEach`
 
+``` purescript
+beforeEach :: forall e. Eff e _ -> Spec e Unit
+```
 
-    itIsNot :: forall e a. T.Done -> String -> Eff e a
+#### `afterEach`
 
+``` purescript
+afterEach :: forall e. Eff e _ -> Spec e Unit
+```
 
-    itIsNot' :: forall a. T.Done -> String -> a
+#### `beforeAsync`
 
+``` purescript
+beforeAsync :: forall e. (Done -> Eff e _) -> Spec e Unit
+```
 
-    only :: forall e. Spec e Unit -> Spec e Unit
+#### `afterAsync`
 
+``` purescript
+afterAsync :: forall e. (Done -> Eff e _) -> Spec e Unit
+```
 
-    onlyIf :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+#### `beforeEachAsync`
 
+``` purescript
+beforeEachAsync :: forall e. (Done -> Eff e _) -> Spec e Unit
+```
 
-    onlyUnless :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+#### `afterEachAsync`
 
+``` purescript
+afterEachAsync :: forall e. (Done -> Eff e _) -> Spec e Unit
+```
 
-    pending :: forall e. String -> Spec e Unit
+#### `itIs`
 
+``` purescript
+itIs :: forall e a. Done -> Eff e a
+```
 
-    setTimeout :: forall e. Number -> Spec e Unit -> Spec e Unit
+#### `itIsNot`
 
+``` purescript
+itIsNot :: forall e a. Done -> String -> Eff e a
+```
 
-    skip :: forall e. Spec e Unit -> Spec e Unit
+#### `itIsNot'`
 
-
-    skipIf :: forall e. Boolean -> Spec e Unit -> Spec e Unit
-
-
-    skipUnless :: forall e. Boolean -> Spec e Unit -> Spec e Unit
+``` purescript
+itIsNot' :: forall a. Done -> String -> a
+```
 
 
 
