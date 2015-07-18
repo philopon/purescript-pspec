@@ -1,88 +1,115 @@
-# Module Documentation
-
 ## Module Test.PSpec.Types
 
-### Types
+#### `ExecMode`
 
+``` purescript
+newtype ExecMode
+```
 
-    data Done :: *
+##### Instances
+``` purescript
+instance showExecMode :: Show ExecMode
+```
 
+#### `ExecModes`
 
-    newtype ExecMode
+``` purescript
+type ExecModes = { skip :: ExecMode, only :: ExecMode }
+```
 
+#### `execModes`
 
-    type ExecModes = { only :: ExecMode, skip :: ExecMode }
+``` purescript
+execModes :: ExecModes
+```
 
+#### `noneMode`
 
-    type OpState = { timeout :: Maybe Number, execMode :: ExecMode }
+``` purescript
+noneMode :: ExecMode
+```
 
+#### `skipMode`
 
-    data Operation e where
-      Describe :: String -> [Operation e] -> Operation e
-      It :: String -> Eff e Unit -> Operation e
-      ItAsync :: String -> (Done -> Eff e Unit) -> Operation e
-      Pending :: String -> Operation e
-      SetMode :: ExecMode -> [Operation e] -> Operation e
-      SetTimeout :: Number -> [Operation e] -> Operation e
-      Before :: String -> Eff e Unit -> Operation e
-      After :: String -> Eff e Unit -> Operation e
-      BeforeEach :: String -> Eff e Unit -> Operation e
-      AfterEach :: String -> Eff e Unit -> Operation e
-      BeforeAsync :: String -> (Done -> Eff e Unit) -> Operation e
-      AfterAsync :: String -> (Done -> Eff e Unit) -> Operation e
-      BeforeEachAsync :: String -> (Done -> Eff e Unit) -> Operation e
-      AfterEachAsync :: String -> (Done -> Eff e Unit) -> Operation e
+``` purescript
+skipMode :: ExecMode
+```
 
+#### `onlyMode`
 
-    newtype Spec e a
+``` purescript
+onlyMode :: ExecMode
+```
 
+#### `Done`
 
-### Type Class Instances
+``` purescript
+data Done :: *
+```
 
+#### `Operation`
 
-    instance applicativeSpec :: Applicative (Spec e)
+``` purescript
+data Operation e
+  = Describe String (List (Operation e))
+  | It String (Eff e Unit)
+  | ItAsync String (Done -> Eff e Unit)
+  | Pending String
+  | SetMode ExecMode (List (Operation e))
+  | SetTimeout Number (List (Operation e))
+  | Before String (Eff e Unit)
+  | After String (Eff e Unit)
+  | BeforeEach String (Eff e Unit)
+  | AfterEach String (Eff e Unit)
+  | BeforeAsync String (Done -> Eff e Unit)
+  | AfterAsync String (Done -> Eff e Unit)
+  | BeforeEachAsync String (Done -> Eff e Unit)
+  | AfterEachAsync String (Done -> Eff e Unit)
+```
 
+##### Instances
+``` purescript
+instance showOperation :: Show (Operation e)
+```
 
-    instance applySpec :: Apply (Spec e)
+#### `OpState`
 
+``` purescript
+type OpState = { execMode :: ExecMode, timeout :: Maybe Number }
+```
 
-    instance bindSpec :: Bind (Spec e)
+#### `initialState`
 
+``` purescript
+initialState :: OpState
+```
 
-    instance functorSpec :: Functor (Spec e)
+#### `Spec`
 
+``` purescript
+newtype Spec e a
+```
 
-    instance monadSpec :: Monad (Spec e)
+##### Instances
+``` purescript
+instance functorSpec :: Functor (Spec e)
+instance applySpec :: Apply (Spec e)
+instance applicativeSpec :: Applicative (Spec e)
+instance bindSpec :: Bind (Spec e)
+instance monadSpec :: Monad (Spec e)
+```
 
+#### `runSpec`
 
-    instance showExecMode :: Show ExecMode
+``` purescript
+runSpec :: forall e a. Spec e a -> List (Operation e)
+```
 
+#### `write`
 
-    instance showOperation :: Show (Operation e)
-
-
-### Values
-
-
-    execModes :: ExecModes
-
-
-    initialState :: OpState
-
-
-    noneMode :: ExecMode
-
-
-    onlyMode :: ExecMode
-
-
-    runSpec :: forall e a. Spec e a -> [Operation e]
-
-
-    skipMode :: ExecMode
-
-
-    write :: forall e. Operation e -> Spec e Unit
+``` purescript
+write :: forall e. Operation e -> Spec e Unit
+```
 
 
 

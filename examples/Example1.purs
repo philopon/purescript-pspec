@@ -1,7 +1,6 @@
-module Test.Main where
+module Example1 where
 
-import Control.Timer
-
+import Prelude
 import Test.PSpec
 import Test.PSpec.Mocha
 import Test.Assert.Simple
@@ -9,18 +8,18 @@ import Test.StrongCheck
 import Data.Tuple
 import Math
 
-import Debug.Trace
+import qualified Control.Monad.Eff.Console as Console
 
 main = runMocha $ do
-  before     $ trace "before called"
-  after      $ trace "after called"
-  beforeEach $ trace "before each called"
-  afterEach  $ trace "after each called"
+  before     $ Console.log "before called"
+  after      $ Console.log "after called"
+  beforeEach $ Console.log "before each called"
+  afterEach  $ Console.log "after each called"
 
-  beforeAsync     $ \done -> trace "beforeAsync called" >>= \_ -> itIs done
-  afterAsync      $ \done -> trace "afterAsync called" >>= \_ -> itIs done
-  beforeEachAsync $ \done -> trace "beforeEachAsync called" >>= \_ -> itIs done
-  afterEachAsync  $ \done -> trace "afterEachAsync called" >>= \_ -> itIs done
+  beforeAsync     $ \done -> Console.log "beforeAsync called" >>= \_ -> itIs done
+  afterAsync      $ \done -> Console.log "afterAsync called" >>= \_ -> itIs done
+  beforeEachAsync $ \done -> Console.log "beforeEachAsync called" >>= \_ -> itIs done
+  afterEachAsync  $ \done -> Console.log "afterEachAsync called" >>= \_ -> itIs done
 
   describe "title" $ do
     it "success" $ return unit
@@ -39,10 +38,7 @@ main = runMocha $ do
         skipIf false $ do
           it "not skipped" $ return unit
 
-      setTimeout 5000 $ do
-        itAsync "long time" $ \done -> timeout 3000 (itIs done)
-
   describe "Math" $ do
     it "should be bigger multiply by (>= 1)" $ do
       quickCheck $ \(Tuple (Positive a) b) ->
-        (max 1 a) * b >= b
+        (max 1.0 a) * b >= b

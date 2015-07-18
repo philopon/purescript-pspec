@@ -12,6 +12,7 @@ module Test.PSpec
   , beforeAsync', afterAsync', beforeEachAsync', afterEachAsync'
   ) where
 
+import Prelude
 import Control.Monad.Eff
 import Data.Function
 import Data.Maybe
@@ -94,27 +95,14 @@ beforeEachAsync = beforeEachAsync' ""
 afterEachAsync  :: forall e. (T.Done -> Eff e _) -> Spec e Unit
 afterEachAsync  = afterEachAsync' ""
 
-foreign import itIs """
-function itIs(done){
-  return function itIsEff(){
-    done();
-  }
-}""" :: forall e a. T.Done -> Eff e a
+foreign import itIs :: forall e a. T.Done -> Eff e a
 
-foreign import itIsNotImpl """
-function itIsNotImpl(done, msg){
-  return function itIsNotEff(){
-    done(msg);
-  }
-}""" :: forall e a. Fn2 T.Done String (Eff e a)
+foreign import itIsNotImpl :: forall e a. Fn2 T.Done String (Eff e a)
 
 itIsNot :: forall e a. T.Done -> String -> Eff e a
 itIsNot d e = runFn2 itIsNotImpl d e
 
-foreign import itIsNotPrimeImpl """
-function itIsNotPrimeImpl(done, msg){
-  done(msg);
-}""" :: forall a. Fn2 T.Done String a
+foreign import itIsNotPrimeImpl :: forall a. Fn2 T.Done String a
 
 itIsNot' :: forall a. T.Done -> String -> a
 itIsNot' d e = runFn2 itIsNotPrimeImpl d e

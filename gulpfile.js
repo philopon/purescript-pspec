@@ -1,47 +1,60 @@
 var gulp       = require('gulp');
 var purescript = require('gulp-purescript');
-var foreach    = require('gulp-foreach');
+var merge      = require('merge-stream');
 var mocha      = require('gulp-mocha');
 
 var path       = require('path');
 
-var bowerPurs = 'bower_components/purescript-*/src/**/*.purs';
-var sources = [bowerPurs, 'src/**/*.purs'];
+var sources =
+    [ 'bower_components/purescript-*/src/**/*.purs'
+    , 'src/**/*.purs'
+    , 'examples/**/*.purs'
+    ];
 
-gulp.task('pscMake', function(){
-  return gulp
-    .src(sources)
-    .pipe(purescript.pscMake());
+var ffis =
+    [ 'bower_components/purescript-*/src/**/*.js'
+    , 'src/**/*.js'
+    ];
+
+var modules = 
+    [ 'Test.PSpec'
+    , 'Test.PSpec.Types'
+    , 'Test.PSpec.Mocha'
+    ]
+
+gulp.task('psc', function(){
+  return purescript.psc({
+    src: sources,
+    ffi: ffis
+    });
 });
 
-gulp.task('dotPsci', function(){
-  return gulp
-    .src(sources)
-    .pipe(purescript.dotPsci());
+gulp.task('psci', function(){
+  return purescript.psci({
+    src: sources,
+    ffi: ffis
+    });
 });
 
 gulp.task('pscDocs', function(){
-  return gulp
-    .src('src/**/*.purs')
-    .pipe(foreach(function(stream, file){
-      var p = path.resolve(
-        'docs',
-        path.dirname(file.relative),
-        path.basename(file.relative, ".purs") + ".md")
-      return stream
-        .pipe(purescript.pscDocs())
-        .pipe(gulp.dest(p));
-    }));
+  return merge(modules.map(function(module){
+    return purescript.pscDocs({
+      src: sources,
+      docgen: module
+    }).pipe(gulp.dest('docs/' + module.replace(/\./g, '/') + '.md'));
+  }));
 });
 
-gulp.task('example', function(){
-  return gulp
-    .src(sources.concat('examples/Main.purs'))
-    .pipe(purescript.psc({main: "Test.Main", output: 'main.js'}))
-    .pipe(gulp.dest('examples/'))
+gulp.task('example', ['psc'], function(){
+  return merge()
+  return purescript.pscBundle({
+    src: 'output/**/*.js',
+    main: 'Example1',
+    module: 'Example1'
+    }).pipe(gulp.dest('examples/Example1.js'))
     .pipe(mocha());
 });
 
 gulp.task('test', ['example']);
 
-gulp.task('default', ['pscMake', 'dotPsci', 'pscDocs', 'example']);
+gulp.task('default', ['psc', 'psci', 'pscDocs', 'example']);
